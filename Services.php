@@ -1,70 +1,33 @@
-<?php namespace CodeIgniter;
+<?php namespace Config;
 
-use CIUnitTestCase;
-use Config\Services as ConfigServices;
+use CodeIgniter\Config\Services as CoreServices;
+use CodeIgniter\Config\BaseConfig;
+
+require_once SYSTEMPATH . 'Config/Services.php';
 
 /**
- * Services class for testing.
+ * Services Configuration file.
+ *
+ * Services are simply other classes/libraries that the system uses
+ * to do its job. This is used by CodeIgniter to allow the core of the
+ * framework to be swapped out easily without affecting the usage within
+ * the rest of your application.
+ *
+ * This file holds any application-specific services, or service overrides
+ * that you might need. An example has been included with the general
+ * method format you should use for your service methods. For more examples,
+ * see the core Services file at system/Config/Services.php.
  */
-class Services
+class Services extends CoreServices
 {
-	/**
-	 * Mock objects for testing which are returned if exist.
-	 *
-	 * @var array
-	 */
-	static protected $mocks = [];
 
-	//--------------------------------------------------------------------
-
-	/**
-	 * Reset shared instances and mocks for testing.
-	 */
-	public static function reset()
-	{
-		static::$mocks = [];
-
-		CIUnitTestCase::setPrivateProperty(ConfigServices::class, 'instances', []);
-	}
-
-	//--------------------------------------------------------------------
-
-	/**
-	 * Inject mock object for testing.
-	 *
-	 * @param string $name
-	 * @param $mock
-	 */
-	public static function injectMock(string $name, $mock)
-	{
-		$name                 = strtolower($name);
-		static::$mocks[$name] = $mock;
-	}
-
-	//--------------------------------------------------------------------
-
-	/**
-	 * Returns a service
-	 *
-	 * @param string $name
-	 * @param array  $arguments
-	 */
-	public static function __callStatic(string $name, array $arguments)
-	{
-		$name = strtolower($name);
-
-		// Returns mock if exists
-		if (isset(static::$mocks[$name]))
-		{
-			return static::$mocks[$name];
-		}
-
-		if (method_exists(ConfigServices::class, $name))
-		{
-			return ConfigServices::$name(...$arguments);
-		}
-	}
-
-	//--------------------------------------------------------------------
-
+	//    public static function example($getShared = true)
+	//    {
+	//        if ($getShared)
+	//        {
+	//            return static::getSharedInstance('example');
+	//        }
+	//
+	//        return new \CodeIgniter\Example();
+	//    }
 }
